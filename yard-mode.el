@@ -1,7 +1,8 @@
-;;; yard-mode.el --- Minor mode for font-locking and editing YARD comments in ruby files
-;;; Version: 0.1
-;;; Author: Kyle Hargraves
-;;; URL: https://github.com/pd/yard-mode.el
+;;; yard-mode.el --- Minor mode for Ruby YARD comments
+
+;; Author: Kyle Hargraves
+;; URL: https://github.com/pd/yard-mode.el
+;; Version: 0.1
 
 (eval-when-compile (require 'cl))
 (require 'regexp-opt)
@@ -154,3 +155,5 @@ and `font-lock-remove-keywords'."
     (font-lock-mode 1)))
 
 (provide 'yard-mode)
+
+;;; yard-mode.el ends here
