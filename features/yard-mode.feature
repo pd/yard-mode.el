@@ -14,6 +14,13 @@ Feature: Fontification of YARD comments
     When I place the cursor before "@return"
     Then the face should be "font-lock-doc-face"
 
+  Scenario: YARD directives are fontified
+    When I place the cursor before "@!group"
+    Then the face should be "font-lock-doc-face"
+
+    When I place the cursor before "@!endgroup"
+    Then the face should be "font-lock-doc-face"
+
   Scenario: ivars are not broken
     When I place the cursor before "@version"
     Then the face should be "font-lock-variable-name-face"
