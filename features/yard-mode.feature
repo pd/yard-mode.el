@@ -22,13 +22,19 @@ Feature: Fontification of YARD comments
     Then the face should be "yard-directive-face"
 
   Scenario: YARD Type Specifiers are fontified
-    When I place the cursor before "String"
+    When I place the cursor after "@param ["
+    Then the face should be "yard-types-face"
+    When I place the cursor after "@param library ["
+    Then the face should be "yard-types-face"
+    When I place the cursor after "@yieldparam version ["
     Then the face should be "yard-types-face"
 
   Scenario: YARD variable names are fontified when relevant
     When I place the cursor after "@return [Boolean, Array] "
     Then the face should be "font-lock-comment-face"
     When I place the cursor after "@param [String] "
+    Then the face should be "yard-name-face"
+    When I place the cursor after "@yieldparam "
     Then the face should be "yard-name-face"
 
   Scenario: ivars are not broken

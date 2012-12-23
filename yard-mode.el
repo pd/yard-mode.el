@@ -60,8 +60,9 @@ See http://rubydoc.info/docs/yard/file/docs/Tags.md#Directive_List"
 and `font-lock-remove-keywords'."
   `((,(concat "# *\\(@" (regexp-opt yard-tags) "\\)") 1 'yard-tag-face t)
     (,(concat "# *\\(@!" (regexp-opt yard-directives) "\\)") 1 'yard-directive-face t)
-    (,(concat "# *@" (regexp-opt yard-tags) " \\[\\(.+?\\)\\]") 1 'yard-types-face t)
-    (,(concat "# *@" (regexp-opt yard-tags-with-names) " \\(?:\\[\\(.+?\\)\\]\\)? \\(\\sw+\\)") 2 'yard-name-face t)
+    (,(concat "# *@!?.+?\\[\\(.+?\\)\\]") 1 'yard-types-face t)
+    (,(concat "# *@!?" (regexp-opt yard-tags-with-names) " \\(\\sw+\\)") 1 'yard-name-face t)
+    (,(concat "# *@!?" (regexp-opt yard-tags-with-names) " \\[.+?\\] \\(\\sw+\\)") 1 'yard-name-face t)
     ))
 
 (defun yard-turn-on ()

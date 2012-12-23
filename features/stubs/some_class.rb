@@ -1,16 +1,22 @@
 # @see OtherClass
 class SomeClass
-  # @!group Callbacks
-  def before_filter; end
-  def after_filter;  end
+  # @!group Lifecycle
+  def setup; end
+  def teardown;  end
   # @!endgroup
 
-  # @param [String] version the version
-  def initialize(version)
+  # Something else
+  # @param library [String] the name of the library
+  # @param [String] version the version you have
+  def initialize(library, version)
     @version = version
   end
 
-  # @return [Boolean] true if the given version is outdated
-  def old?
-  end
+  # @return [Boolean, Array] true if the given version is outdated
+  def old?; end
+
+  # @yield Consecutive newer version numbers.
+  # @yieldparam version [String] the newer version
+  # @yieldreturn [Boolean] whether to fetch the newer version
+  def outdated; end
 end
