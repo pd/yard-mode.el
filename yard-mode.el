@@ -6,6 +6,9 @@
 (eval-when-compile (require 'cl))
 (require 'regexp-opt)
 
+(defgroup yard nil
+  "Minor mode to fontify YARD tags and directives.")
+
 (defcustom yard-tags
   '("abstract" "api" "attr" "attr_reader" "attr_writer"
     "author" "deprecated" "example" "note" "option" "overload"
@@ -13,21 +16,52 @@
     "yield" "yieldparam" "yieldreturn")
   "The list of known YARD @tag names.
 
-See http://rubydoc.info/docs/yard/file/docs/Tags.md#Tag_List")
+See http://rubydoc.info/docs/yard/file/docs/Tags.md#Tag_List"
+  :type 'list
+  :group 'yard)
+
+(defcustom yard-tags-with-names
+  '("attr" "attr_reader" "attr_writer" "param" "yieldparam")
+  "YARD tags which require a name value."
+  :type 'list
+  :group 'yard)
 
 (defcustom yard-directives
   '("attribute" "endgroup" "group" "macro" "method"
     "parse" "scope" "visibility")
   "The list of known YARD @!directive names.
 
-See http://rubydoc.info/docs/yard/file/docs/Tags.md#Directive_List")
+See http://rubydoc.info/docs/yard/file/docs/Tags.md#Directive_List"
+  :type 'list
+  :group 'yard)
+
+(defface yard-tag-face
+  '((t :inherit font-lock-doc-face))
+  "Face for YARD tags."
+  :group 'yard)
+
+(defface yard-directive-face
+  '((t :inherit font-lock-doc-face))
+  "Face for YARD directives."
+  :group 'yard)
+
+(defface yard-types-face
+  '((t :inherit font-lock-type-face))
+  "Face for YARD types list; ie 'String, #to_s': @param [String, #to_s] name"
+  :group 'yard)
+
+(defface yard-name-face
+  '((t :inherit font-lock-variable-name-face))
+  "Face for YARD variable name; eg. 'name': @param [String] name"
+  :group 'yard)
 
 (defun yard-font-lock-keywords ()
   "Generate a list of keywords suitable for `font-lock-add-keywords'
-and `font-lock-remove-keywords' based on the contents of `yard-tags'
-and `yard-directives'."
-  `((,(concat "# *\\(@" (regexp-opt yard-tags) "\\)") 1 font-lock-doc-face t)
-    (,(concat "# *\\(@!" (regexp-opt yard-directives) "\\)") 1 font-lock-doc-face t)
+and `font-lock-remove-keywords'."
+  `((,(concat "# *\\(@" (regexp-opt yard-tags) "\\)") 1 'yard-tag-face t)
+    (,(concat "# *\\(@!" (regexp-opt yard-directives) "\\)") 1 'yard-directive-face t)
+    (,(concat "# *@" (regexp-opt yard-tags) " \\[\\(.+?\\)\\]") 1 'yard-types-face t)
+    (,(concat "# *@" (regexp-opt yard-tags-with-names) " \\(?:\\[\\(.+?\\)\\]\\)? \\(\\sw+\\)") 2 'yard-name-face t)
     ))
 
 (defun yard-turn-on ()
