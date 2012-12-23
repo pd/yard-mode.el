@@ -3,6 +3,8 @@
 Rudimentary support for fontifying YARD tags and directives in ruby
 comments.
 
+![Example screenshot](https://github.com/pd/yard-mode.el/raw/master/screenshot.png)
+
 ## Installation
 
 MELPA should support this soon enough.
