@@ -8,7 +8,8 @@
 (require 'regexp-opt)
 
 (defgroup yard nil
-  "Minor mode to fontify YARD tags and directives.")
+  "Minor mode to fontify YARD tags and directives."
+  :group 'tools)
 
 (defcustom yard-tags
   '("abstract" "api" "attr" "attr_reader" "attr_writer"
