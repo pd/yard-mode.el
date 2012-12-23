@@ -1,4 +1,4 @@
-Feature: Fontification of YARD comments
+Feature: yard-mode
 
   Background:
     Given I view a ruby file with yard-mode enabled
@@ -40,3 +40,10 @@ Feature: Fontification of YARD comments
   Scenario: ivars are not broken
     When I place the cursor before "@version"
     Then the face should be "font-lock-variable-name-face"
+
+  Scenario: eldoc support
+    When I enable eldoc-mode
+    And I place the cursor after "@see"
+    Then eldoc should be showing "@see name description"
+    When I place the cursor after "@!group"
+    Then eldoc should be showing "@!group description"

@@ -5,6 +5,10 @@
         (yard-mode)
         (font-lock-fontify-buffer)))
 
+(When "I enable eldoc-mode"
+      (lambda ()
+        (eldoc-mode)))
+
 (Then "^the \"\\(.+\\)\" tag is highlighted$"
       (lambda (tag)
         (goto-char (point-min))
@@ -19,3 +23,8 @@
         (should
          (equal (intern-soft face-name)
                 (plist-get (text-properties-at (point)) 'face)))))
+
+(Then "^eldoc should be showing \"\\(.+\\)\""
+      (lambda (msg)
+        (should
+         (string= msg (funcall eldoc-documentation-function)))))
