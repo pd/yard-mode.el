@@ -6,8 +6,7 @@ comments.
 ![Example screenshot](https://github.com/pd/yard-mode.el/raw/master/screenshot.png)
 
 ## Installation
-
-MELPA should support this soon enough.
+Use [MELPA](https://github.com/milkypostman/melpa): `M-x package-install yard-mode`.
 
 Add it to your ruby hook:
 
