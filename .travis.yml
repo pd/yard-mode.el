@@ -1,0 +1,27 @@
+language: emacs-lisp
+before_install:
+  - curl -fsSkL
+        --max-time 10
+        --retry 10
+        --retry-delay 10
+        https://raw.github.com/rejeep/carton/master/go | sh
+  - if [ "$EMACS" = 'emacs-snapshot' ]; then
+      sudo add-apt-repository -y ppa:cassou/emacs &&
+      sudo apt-get update -qq &&
+      sudo apt-get install -qq
+          emacs-snapshot-el emacs-snapshot-gtk emacs-snapshot;
+    fi
+  - if [ "$EMACS" = 'emacs24' ]; then
+      sudo add-apt-repository -y ppa:cassou/emacs &&
+      sudo apt-get update -qq &&
+      sudo apt-get install -qq
+          emacs24 emacs24-el emacs24-common-non-dfsg;
+    fi
+env:
+  matrix:
+    - EMACS=emacs24
+    - EMACS=emacs-snapshot
+  global:
+    - CARTON=$HOME/.carton/bin/carton
+script:
+  make travis
