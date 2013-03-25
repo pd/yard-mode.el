@@ -108,8 +108,10 @@ and `font-lock-remove-keywords'."
   `((,(concat "# *\\(@" yard-tags-re "\\)") 1 'yard-tag-face t)
     (,(concat "# *\\(@!" yard-directives-re "\\)") 1 'yard-directive-face t)
     (,(concat "# *@!?.+?\\[\\(.+?\\)\\]") 1 'yard-types-face t)
-    (,(concat "# *@!?" yard-tags-with-names-re " \\(\\sw+\\)") 1 'yard-name-face t)
-    (,(concat "# *@!?" yard-tags-with-names-re " \\[.+?\\] \\(\\sw+\\)") 1 'yard-name-face t)
+    (,(concat "# *@!?" yard-tags-with-names-re
+              " \\(\\(\\sw\\|\\s_\\)+\\)") 1 'yard-name-face t)
+    (,(concat "# *@!?" yard-tags-with-names-re
+              " \\[.+?\\] \\(\\(\\sw\\|\\s_\\)+\\)") 1 'yard-name-face t)
     ))
 
 (defun yard-in-comment-p ()
