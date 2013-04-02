@@ -7,8 +7,10 @@ class SomeClass
 
   # Something else
   # @param library [String] the name of the library
-  # @param [String] version the version you have
-  def initialize(library, version)
+  # @param [String] version_number the version you have
+  # @param [Hash] options the options
+  # @option options [String] :an_option an option
+  def initialize(library, version_number, options = {})
     @version = version
   end
 

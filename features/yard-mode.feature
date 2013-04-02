@@ -28,14 +28,26 @@ Feature: yard-mode
     Then the face should be "yard-types-face"
     When I place the cursor after "@yieldparam version ["
     Then the face should be "yard-types-face"
+    When I place the cursor after "@option options ["
+    Then the face should be "yard-types-face"
 
   Scenario: YARD variable names are fontified when relevant
     When I place the cursor after "@return [Boolean, Array] "
     Then the face should be "font-lock-comment-face"
     When I place the cursor after "@param [String] "
     Then the face should be "yard-name-face"
+    When I place the cursor after "@param [String] version"
+    Then the face should be "yard-name-face"
+    When I place the cursor after "@param [String] version_"
+    Then the face should be "yard-name-face"
     When I place the cursor after "@yieldparam "
     Then the face should be "yard-name-face"
+    When I place the cursor after "@option "
+    Then the face should be "yard-name-face"
+
+  Scenario: YARD option names are fontified when relevant
+    When I place the cursor after "@option options [String] "
+    Then the face should be "yard-option-face"
 
   Scenario: ivars are not broken
     When I place the cursor before "@version"
