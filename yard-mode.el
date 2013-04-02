@@ -61,6 +61,12 @@ See http://rubydoc.info/docs/yard/file/docs/Tags.md#Tag_List"
   :type 'list
   :group 'yard)
 
+(defcustom yard-tags-with-options
+  '("option")
+  "YARD tags which require an option value."
+  :type 'list
+  :group 'yard)
+
 (defcustom yard-directives
   '("attribute" "endgroup" "group" "macro" "method"
     "parse" "scope" "visibility")
@@ -82,6 +88,9 @@ See http://rubydoc.info/docs/yard/file/docs/Tags.md#Directive_List"
 (defvar yard-tags-with-names-re
   (regexp-opt yard-tags-with-names))
 
+(defvar yard-tags-with-options-re
+  (regexp-opt yard-tags-with-options))
+
 (defface yard-tag-face
   '((t :inherit font-lock-doc-face))
   "Face for YARD tags."
@@ -102,6 +111,11 @@ See http://rubydoc.info/docs/yard/file/docs/Tags.md#Directive_List"
   "Face for YARD variable name; eg. 'name': @param [String] name"
   :group 'yard)
 
+(defface yard-option-face
+  '((t :inherit font-lock-constant-face))
+  "Face for YARD option name; eg. ':name': @option options [String] name"
+  :group 'yard)
+
 (defun yard-font-lock-keywords ()
   "Generate a list of keywords suitable for `font-lock-add-keywords'
 and `font-lock-remove-keywords'."
@@ -112,7 +126,11 @@ and `font-lock-remove-keywords'."
               " \\(\\(\\sw\\|\\s_\\)+\\)") 1 'yard-name-face t)
     (,(concat "# *@!?" yard-tags-with-names-re
               " \\[.+?\\] \\(\\(\\sw\\|\\s_\\)+\\)") 1 'yard-name-face t)
-    ))
+    (,(concat "# *@!?" yard-tags-with-options-re
+              " \\(\\(\\sw\\|\\s_\\)+\\)") 1 'yard-name-face t)
+    (,(concat "# *@!?" yard-tags-with-options-re
+              " \\(\\sw\\|\\s_\\)+ \\[.+?\\] \\(\\(:\\|\\sw\\|\\s_\\)+\\)") 2
+              'yard-option-face t)))
 
 (defun yard-in-comment-p ()
   "Returns whether point is currently inside of a comment."
