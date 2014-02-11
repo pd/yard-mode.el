@@ -7,9 +7,6 @@ before_install:
   - cask
 env:
   matrix:
-    - EVM_EMACS=emacs-23.4-bin
-    - EVM_EMACS=emacs-24.1-bin
-    - EVM_EMACS=emacs-24.2-bin
     - EVM_EMACS=emacs-24.3-bin
   global:
     - CARTON=$HOME/.carton/bin/carton
