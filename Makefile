@@ -1,17 +1,16 @@
-CARTON ?= carton
-ECUKES = $(shell find elpa/ecukes-*/ecukes | tail -1)
+CASK ?= cask
 
 all: script
 
 # Font face testing doesn't work in --win mode,
 # so I don't run this by default. Good enough.
 win:
-	${CARTON} exec ${ECUKES} features
+	${CASK} exec ecukes features
 
 script:
-	${CARTON} exec ${ECUKES} --script features
+	${CASK} exec ecukes --script features
 
-carton:
-	${CARTON} install
+cask:
+	${CASK} install
 
-travis: carton script
+travis: cask script
