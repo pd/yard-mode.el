@@ -1,5 +1,6 @@
 ;; -*- mode: emacs-lisp -*-
-(source "melpa" "http://melpa.milkbox.net/packages/")
+(source gnu)
+(source melpa)
 
 (package "yard-mode" "0.1" "Minor mode for font-locking and editing YARD comments in ruby files")
 
