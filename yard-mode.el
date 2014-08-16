@@ -76,6 +76,11 @@ See http://rubydoc.info/docs/yard/file/docs/Tags.md#Directive_List"
   :type 'list
   :group 'yard)
 
+(defcustom yard-use-eldoc t
+  "When non-nil, `yard-mode' will set `eldoc-documentation-function' to
+provide ElDoc messages when cursor is on a YARD comment. You may want to
+disable this if you use another minor mode which also offers `eldoc' support.")
+
 (defvar yard-tags-re
   (regexp-opt yard-tags))
 
@@ -159,12 +164,14 @@ and `font-lock-remove-keywords'."
 (defun yard-turn-on ()
   "Turn on yard-mode."
   (font-lock-add-keywords nil (yard-font-lock-keywords))
-  (set (make-local-variable 'eldoc-documentation-function) 'yard-eldoc-message))
+  (when yard-use-eldoc
+    (set (make-local-variable 'eldoc-documentation-function) 'yard-eldoc-message)))
 
 (defun yard-turn-off ()
   "Turn off yard-mode."
   (font-lock-remove-keywords nil (yard-font-lock-keywords))
-  (set (make-local-variable 'eldoc-documentation-function) nil))
+  (when yard-use-eldoc
+    (set (make-local-variable 'eldoc-documentation-function) nil)))
 
 ;;;###autoload
 (define-minor-mode yard-mode "Font locking and completion for YARD tags and directives"
