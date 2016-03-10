@@ -4,6 +4,13 @@
 ;; URL: https://github.com/pd/yard-mode.el
 ;; Version: 0.1
 
+;;; Commentary:
+
+;; Provides syntax highlighting and eldoc support for
+;; YARD comment strings.
+
+;;; Code:
+
 (eval-when-compile (require 'cl))
 (require 'regexp-opt)
 
@@ -53,7 +60,9 @@ See http://rubydoc.info/docs/yard/file/docs/Tags.md#Tag_List"
     "@!parse [language] code"
     "@!scope class | instance"
     "@!visibility public | protected | private")
-  "The full docstring for defined YARD tags.")
+  "The full docstring for defined YARD tags."
+  :type 'list
+  :group 'yard)
 
 (defcustom yard-tags-with-names
   '("attr" "attr_reader" "attr_writer" "param" "yieldparam")
@@ -77,9 +86,10 @@ See http://rubydoc.info/docs/yard/file/docs/Tags.md#Directive_List"
   :group 'yard)
 
 (defcustom yard-use-eldoc t
-  "When non-nil, `yard-mode' will set `eldoc-documentation-function' to
-provide ElDoc messages when cursor is on a YARD comment. You may want to
-disable this if you use another minor mode which also offers `eldoc' support.")
+  "When non-nil, display ELDoc messages when cursor is on a YARD comment.
+You may want to disable this if it conflicts with another mode's ELDoc suport."
+  :type 'boolean
+  :group 'yard)
 
 (defvar yard-tags-re
   (regexp-opt yard-tags))
@@ -122,8 +132,8 @@ disable this if you use another minor mode which also offers `eldoc' support.")
   :group 'yard)
 
 (defun yard-font-lock-keywords ()
-  "Generate a list of keywords suitable for `font-lock-add-keywords'
-and `font-lock-remove-keywords'."
+  "Generate a list of font-lock keywords.
+The format is suitable for `font-lock-add-keywords' and `font-lock-remove-keywords'."
   `((,(concat "# *\\(@" yard-tags-re "\\)") 1 'yard-tag-face t)
     (,(concat "# *\\(@!" yard-directives-re "\\)") 1 'yard-directive-face t)
     (,(concat "# *@!?.+?\\[\\(.+?\\)\\]") 1 'yard-types-face t)
@@ -138,11 +148,12 @@ and `font-lock-remove-keywords'."
               'yard-option-face t)))
 
 (defun yard-in-comment-p ()
-  "Returns whether point is currently inside of a comment."
+  "Return whether point is currently inside of a comment."
   (let ((ppss (syntax-ppss (point))))
     (and ppss (nth 4 ppss))))
 
 (defun yard-tag-at-point ()
+  "Return the YARD tag at point."
   (save-excursion
     (save-match-data
       (backward-to-indentation 0)
@@ -150,6 +161,7 @@ and `font-lock-remove-keywords'."
         (buffer-substring-no-properties (match-beginning 1) (match-end 1))))))
 
 (defun yard-tag-syntax (tag)
+  "Return the syntax format for TAG."
   (let (match)
     (dolist (s yard-tag-docstrings)
       (when (string-match-p (concat "@!?" tag) s)
@@ -157,6 +169,7 @@ and `font-lock-remove-keywords'."
     match))
 
 (defun yard-eldoc-message ()
+  "Return a string documenting the format of the current tag."
   (when (yard-in-comment-p)
     (let ((tag (yard-tag-at-point)))
       (when tag (yard-tag-syntax tag)))))
@@ -174,7 +187,8 @@ and `font-lock-remove-keywords'."
     (set (make-local-variable 'eldoc-documentation-function) nil)))
 
 ;;;###autoload
-(define-minor-mode yard-mode "Font locking and completion for YARD tags and directives"
+(define-minor-mode yard-mode
+  "Font locking and documentation for YARD tags and directives"
   :lighter " YARD"
   (progn
     (if yard-mode

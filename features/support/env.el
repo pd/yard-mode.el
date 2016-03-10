@@ -2,6 +2,9 @@
 ;; requires a directory called util in the project root and that the
 ;; util directory contains the testing tools ert and espuds.
 
+(when (require 'undercover nil t)
+  (undercover "*.el"))
+
 (let* ((features-directory
         (file-name-directory
          (directory-file-name (file-name-directory load-file-name))))
