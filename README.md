@@ -1,5 +1,6 @@
 # yard-mode
 [![Build Status](https://travis-ci.org/pd/yard-mode.el.png)](https://travis-ci.org/pd/yard-mode.el)
+[![Coverage Status](https://coveralls.io/repos/github/pd/yard-mode.el/badge.svg)](https://coveralls.io/github/pd/yard-mode.el)
 
 Rudimentary support for fontifying YARD tags and directives in ruby
 comments.
