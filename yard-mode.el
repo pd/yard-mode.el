@@ -1,4 +1,4 @@
-;;; yard-mode.el --- Minor mode for Ruby YARD comments
+;;; yard-mode.el --- Minor mode for Ruby YARD comments  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2017  Kyle Hargraves
 
@@ -191,17 +191,26 @@ The format is suitable for `font-lock-add-keywords' and `font-lock-remove-keywor
     (let ((tag (yard-tag-at-point)))
       (when tag (yard-tag-syntax tag)))))
 
-(defun yard-turn-on ()
-  "Turn on yard-mode."
-  (font-lock-add-keywords nil (yard-font-lock-keywords))
-  (when yard-use-eldoc
-    (set (make-local-variable 'eldoc-documentation-function) 'yard-eldoc-message)))
+(eval-and-compile 
+  ;; add-function arrived after emacs 24.?
+  (defun yard-turn-on ()
+    "Turn on yard-mode."
+    (font-lock-add-keywords nil (yard-font-lock-keywords))
+    (when yard-use-eldoc
+      (if (fboundp 'add-function)
+          (add-function :before-until (local 'eldoc-documentation-function)
+                        #'yard-eldoc-message)
+        (set (make-local-variable 'eldoc-documentation-function)
+             #'yard-eldoc-message))))
 
-(defun yard-turn-off ()
-  "Turn off yard-mode."
-  (font-lock-remove-keywords nil (yard-font-lock-keywords))
-  (when yard-use-eldoc
-    (set (make-local-variable 'eldoc-documentation-function) nil)))
+  (defun yard-turn-off ()
+    "Turn off yard-mode."
+    (font-lock-remove-keywords nil (yard-font-lock-keywords))
+    (when yard-use-eldoc
+      (if (fboundp 'remove-function)
+          (remove-function (local 'eldoc-documentation-function)
+                           #'yard-eldoc-message)
+        (set (make-local-variable 'eldoc-documentation-function) nil)))))
 
 ;;;###autoload
 (define-minor-mode yard-mode
